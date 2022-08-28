@@ -3,9 +3,6 @@
 {% block content %}
 <form method="post" action="{% url 'blog:signin' %}">
   {% csrf_token %}
-    <div class="modal-header pb-0 bg-white border-0">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
     <div class="card-body p-md-5">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
