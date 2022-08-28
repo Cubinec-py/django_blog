@@ -10,8 +10,8 @@ from blog.views import \
 app_name = 'blog'
 urlpatterns = [
     path('', TemplateView.as_view(template_name='blog/index.html'), name='home'),
-    path('about/', cache_page(60 * 15)(TemplateView.as_view(template_name='about_faq/about.html')), name='about'),
-    path('faq/', cache_page(60 * 15)(TemplateView.as_view(template_name='about_faq/faq.html')), name='faq'),
+    path('about/', TemplateView.as_view(template_name='about_faq/about.html'), name='about'),
+    path('faq/', TemplateView.as_view(template_name='about_faq/faq.html'), name='faq'),
 
     path('accounts/', CustomLoginView.as_view(), name='login'),
     path('accounts/register/', SignUpView.as_view(), name='signin'),
