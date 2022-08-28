@@ -22,9 +22,11 @@ django-crispy-forms==1.14.0
 django-debug-toolbar==3.6.0
 django-extensions==3.2.0
 django-shell-plus==1.1.7
+django-split-settings==1.1.0
 django-widget-tweaks==1.4.12
 filelock==3.8.0
 flake8==5.0.4
+gunicorn==20.1.0
 ipython==7.18.1
 ipython-genutils==0.2.0
 jedi==0.18.1
@@ -54,4 +56,5 @@ vine==5.0.0
 virtualenv==20.16.3
 virtualenv-clone==0.5.7
 wcwidth==0.2.5
+whitenoise==6.2.0
 wrapt==1.14.1
