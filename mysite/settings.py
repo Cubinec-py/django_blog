@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
+from django.test.runner import DiscoverRunner
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'asf23fsdvfsd')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -86,6 +88,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+MAX_CONN_AGE = 600
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -93,6 +97,14 @@ DATABASES = {
     }
 }
 
+if "DATABASE_URL" in os.environ:
+    # Configure Django for DATABASE_URL environment variable.
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=MAX_CONN_AGE, ssl_require=True)
+
+    # Enable test database if found in CI environment.
+    if "CI" in os.environ:
+        DATABASES["default"]["TEST"] = DATABASES["default"]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -170,3 +182,18 @@ CACHES = {
         'LOCATION': 'redis://127.0.0.1:6379/1',
     }
 }
+
+
+# Test Runner Config
+class HerokuDiscoverRunner(DiscoverRunner):
+    """Test Runner for Heroku CI, which provides a database for you.
+    This requires you to set the TEST database (done for you by settings().)"""
+
+    def setup_databases(self, **kwargs):
+        self.keepdb = True
+        return super(HerokuDiscoverRunner, self).setup_databases(**kwargs)
+
+
+# Use HerokuDiscoverRunner on Heroku CI
+if "CI" in os.environ:
+    TEST_RUNNER = "gettingstarted.settings.HerokuDiscoverRunner"
