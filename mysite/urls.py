@@ -14,8 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+import blog.views
 
 urlpatterns = [
+    path('', include('blog.urls')),
     path('admin/', admin.site.urls),
+    path('__debug__/', include('debug_toolbar.urls'))
 ]
+
+handler404 = blog.views.error_404_view
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
