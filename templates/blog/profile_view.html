@@ -1,0 +1,154 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container emp-profile">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    {% if object.profile_picture %}
+                    <img class="rounded-circle mt-5" height="300px" width="300px" src="{{ object.profile_picture.url }}" alt=""/>
+                    {% else %}
+                        <img class="rounded-circle mt-5" src="{% static 'images/png-transparent-avatar-default-head-person-unknown-user-anonym-user-pictures-icon.png' %}" alt=""/>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h5>
+                        Profile of {{ object.username }}
+                    </h5>
+                </div>
+            </div>
+            <div class="col-md-2">
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work">
+                    <p>{{ object.username }} posted posts:</p>
+                    {% for post in posts %}
+                        {% if post.posted %}
+                            <p><a href="{% url 'blog:post_view' slug=post.slug %}" >{{ post.title }}</a></p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if posts.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        {% endif %}
+                        {% for i in posts.paginator.page_range %}
+                            {% if users.number == i %}
+                                <li class="page-item"><a class="page-link" href="#">{{ i }} </a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if posts.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Name</label>
+                    </div>
+                    {% if object.first_name %}
+                    <div class="col-md-6">
+                        <p>{{ object.first_name }}</p>
+                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <p>Nothing</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Surname</label>
+                    </div>
+                    {% if object.last_name %}
+                    <div class="col-md-6">
+                        <p>{{ object.last_name }}</p>
+                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <p>Nothing</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Email</label>
+                    </div>
+                    {% if object.email %}
+                    <div class="col-md-6">
+                        <p>{{ object.email }}</p>
+                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <p>Nothing</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Country</label>
+                    </div>
+                    {% if object.country %}
+                    <div class="col-md-6">
+                        <p>{{ object.country }}</p>
+                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <p>Nothing</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>City</label>
+                    </div>
+                    {% if object.city_name %}
+                    <div class="col-md-6">
+                        <p>{{ object.city_name }}</p>
+                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <p>Nothing</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>About</label>
+                    </div>
+                    {% if object.about %}
+                    <div class="col-md-6">
+                        <p>{{ object.about }}</p>
+                    </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <p>Nothing</p>
+                    </div>
+                    {% endif %}
+                </div>`
+            </div>
+            </div>
+    </div>
+{% endblock %}

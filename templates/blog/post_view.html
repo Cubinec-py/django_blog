@@ -1,0 +1,137 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+
+<header>
+    <!-- Intro settings -->
+    <style>
+      #intro {
+        /* Margin to fix overlapping fixed navbar */
+        margin-top: 58px;
+      }
+
+      @media (max-width: 991px) {
+        #intro {
+          /* Margin to fix overlapping fixed navbar */
+          margin-top: 45px;
+        }
+      }
+    </style>
+
+    <!-- Jumbotron -->
+    <div id="intro" class="p-5 text-center bg-light">
+      <h1 class="mb-0 h4">{{ post.title }}</h1>
+    </div>
+    <!-- Jumbotron -->
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main layout-->
+  <main class="mt-4 mb-5">
+      <form method="POST" class="form-group" enctype="multipart/form-data">
+          <div class="container">
+      <!--Grid row-->
+              <div class="row">
+        <!--Grid column-->
+                  <div class="justify-content-center mb-4">
+          <!--Section: Post data-mdb-->
+                      <section class="border-bottom mb-4">
+                          <div class="row-cols-sm-6 text-center">
+                              {% if post.image %}
+                                  <img src="{{ post.image.url }}"
+                                       class="img-fluid shadow-2-strong rounded-5 justify-content-center" alt="" />
+                              {% endif %}
+                          </div>
+
+                          <div class="row align-items-center mb-4">
+                              <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-2">
+                                  {% if post.author.profile_picture %}
+                                      <img src="{{ post.author.profile_picture.url }}" class="rounded-5 shadow-1-strong me-1" height="35" alt="" loading="lazy" />
+                                  {% endif %}
+                                  <span> Publish
+                                      <u>
+                                          {% if post.posted == True %}
+                                              {{ post.creat_date }}
+                                          {% else %}
+                                              not yet
+                                          {% endif %}
+                                      </u> by</span>
+                                  <a href="{% url 'blog:profile_view' pk=post.author.pk %}" class="text-dark">{{ post.author.username }}</a>
+                              </div>
+                          </div>
+                      </section>
+                      <!--Section: Post data-mdb-->
+
+                      <!--Section: Text-->
+                      <section>
+                          <p>
+                              {{ post.body }}
+                          </p>
+                      </section>
+                      <!--Section: Comments-->
+                      <p class="text-center"><strong>Comments</strong></p>
+                      <!--Section: Pagination-->
+                      {% include 'blog/include/all_comments_list.html' %}
+
+                      <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-center">
+                              {% if comments.has_previous %}
+                                  <li class="page-item">
+                                      <a class="page-link" href="?page={{ comments.previous_page_number }}">Previous</a>
+                                  </li>
+                              {% else %}
+                                  <li class="page-item disabled">
+                                      <a class="page-link">Previous</a>
+                                  </li>
+                              {% endif %}
+                              {% for i in comments.paginator.page_range %}
+                                  {% if users.number == i %}
+                                      <li class="page-item"><a class="page-link" href="#">{{ i }} </a></li>
+                                  {% else %}
+                                      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                  {% endif %}
+                              {% endfor %}
+                              {% if comments.has_next %}
+                                  <li class="page-item">
+                                      <a class="page-link" href="?page={{ comments.next_page_number }}">Next</a>
+                                  </li>
+                              {% else %}
+                                  <li class="page-item disabled">
+                                      <a class="page-link">Next</a>
+                                  </li>
+                              {% endif %}
+                            </ul>
+                        </nav>
+                      <!--Section: Reply-->
+                      <div class="col-md-12 text-center">
+                          <a class="btn btn-lg btn-dark" href="{% url 'blog:comment_create' slug=post.slug %}">
+                              <span class="glyphicon glyphicon-plus"></span>
+                              Comment add
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </main>
+  <!--Main layout-->
+
+  <!--Footer-->
+  <footer class="bg-light text-lg-start">
+    <div class="py-4 text-center">
+        <a class="btn btn-lg btn-dark" href="{% url 'blog:home' %}">
+            <span class="glyphicon glyphicon-plus"></span>
+            Home
+        </a>
+    </div>
+      <hr class="m-0" />
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2022 Copyright:
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!--Footer-->
+{% endblock %}
