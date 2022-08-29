@@ -202,7 +202,8 @@ def save_contactus_form(request, form, template_name):
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['text']
             from_email = form.cleaned_data['email']
-            contactus.delay(subject, message, from_email)
+            contactus(subject, message, from_email)
+            # contactus.delay(subject, message, from_email)
             data['form_is_valid'] = True
         else:
             data['form_is_valid'] = False
