@@ -88,6 +88,9 @@ class PostDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = 'blog/include/post_confirm_delete.html'
     success_url = reverse_lazy('blog:user_posts')
 
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
 
 class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Post
@@ -96,6 +99,9 @@ class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView
     success_message = 'Post successfully updated!'
     success_url = reverse_lazy('blog:user_posts')
 
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
 
 class PostUnpostUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
@@ -103,6 +109,9 @@ class PostUnpostUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = 'blog/include/confirm_to_post.html'
     success_message = 'Post successfully posted'
     success_url = reverse_lazy('blog:user_posts')
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
 
 
 class AllPostsListView(generic.ListView):

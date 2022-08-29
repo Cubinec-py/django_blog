@@ -24,6 +24,7 @@ def comment_send_email_user(comment_pk, posts_pk):
     email = post.author.email
     subject = f'New comment to your post {post.title} was created!'
     message = f'Comment detail: \n' \
+              f'Comment url: http://127.0.0.1:8000/post/{post.slug} \n' \
               f'Author: {comment.name} \n' \
               f'Body: {comment.comment_body} \n' \
               f'Data of create: {comment.created}'
