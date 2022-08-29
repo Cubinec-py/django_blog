@@ -1,7 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView, PasswordChangeView
 from django.views.generic import TemplateView
-from django.views.decorators.cache import cache_page
 
 from blog.views import \
     CustomLoginView, SignUpView, UpdateProfile, PostCreateView, UserPostsListView, PostDeleteView, PostUpdateView, \
