@@ -18,6 +18,13 @@
         }
       }
     </style>
+    {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-success" role="alert" >
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
 
     <!-- Jumbotron -->
     <div id="intro" class="p-5 text-center bg-light">
