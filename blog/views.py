@@ -8,6 +8,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from django.contrib import messages
 
 from bootstrap_modal_forms.generic import BSModalLoginView, BSModalCreateView
 
@@ -83,9 +84,10 @@ class UserPostsListView(LoginRequiredMixin, generic.ListView):
         return Post.objects.filter(author=self.request.user)
 
 
-class PostDeleteView(LoginRequiredMixin, generic.DeleteView):
+class PostDeleteView(LoginRequiredMixin, SuccessMessageMixin, generic.DeleteView):
     model = Post
     template_name = 'blog/include/post_confirm_delete.html'
+    success_message = 'Post successfully deleted!'
     success_url = reverse_lazy('blog:user_posts')
 
     def get_queryset(self):
@@ -103,11 +105,11 @@ class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView
         return Post.objects.filter(author=self.request.user)
 
 
-class PostUnpostUpdateView(LoginRequiredMixin, generic.UpdateView):
+class PostUnpostUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Post
     fields = ('posted',)
     template_name = 'blog/include/confirm_to_post.html'
-    success_message = 'Post successfully posted'
+    success_message = 'Post status successfully updated!'
     success_url = reverse_lazy('blog:user_posts')
 
     def get_queryset(self):
@@ -169,6 +171,7 @@ def add_comment_to_post(request, slug):
             posts_pk = post.pk
             comment_send_email_admin(comment_pk, posts_pk)
             comment_send_email_user(comment_pk, posts_pk)
+            messages.success(request, 'Comment created and will be added after moderation.')
             return redirect('blog:post_view', slug=post.slug)
     else:
         form = CommentCreateForm
